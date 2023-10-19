@@ -26,8 +26,9 @@ public class UserModel {
     @Column(unique = true)
     private String username;
     private String password;
+    private String role;
 
     @CreationTimestamp
-    private LocalDateTime createdAt;
+    private LocalDateTime created_at;
 
 }
