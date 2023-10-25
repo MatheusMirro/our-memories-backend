@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import br.com.matheusmirro.ourmemories.auth.domain.user.AuthenticationDTO;
+import br.com.matheusmirro.ourmemories.auth.domain.user.LoginResponseDTO;
+import br.com.matheusmirro.ourmemories.infra.security.TokenService;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import br.com.matheusmirro.ourmemories.repository.user.IUserRepository;
 
@@ -23,15 +25,20 @@ public class UserController {
     private IUserRepository userRepository;
 
     @Autowired
+    TokenService tokenService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthenticationDTO data) {
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(),
-                data.password());
-        this.authenticationManager.authenticate(usernamePassword);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody AuthenticationDTO data) {
+        var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
 
-        return ResponseEntity.ok().build();
+        var auth = this.authenticationManager.authenticate(usernamePassword);
+
+        var token = tokenService.generateToken((UserModel) auth.getPrincipal());
+
+        return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 
     @PostMapping("/register")

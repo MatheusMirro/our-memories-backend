@@ -22,7 +22,9 @@ public class TokenService {
     public String generateToken(UserModel userModel) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            String token = JWT.create().withIssuer("auth-0").withSubject(userModel.getUsername())
+            String token = JWT.create()
+                    .withIssuer("auth-0")
+                    .withSubject(userModel.getUsername())
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
             return token;
@@ -34,9 +36,13 @@ public class TokenService {
     public String validateToken(String token) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm).withIssuer("auth-0").build().verify(token).getSubject();
+            return JWT.require(algorithm)
+                    .withIssuer("auth-0")
+                    .build()
+                    .verify(token)
+                    .getSubject();
         } catch (JWTVerificationException exception) {
-            return "";
+            return exception.getMessage();
         }
     }
 
