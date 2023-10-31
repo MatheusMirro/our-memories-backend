@@ -11,10 +11,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.matheusmirro.ourmemories.auth.domain.user.UserRole;
+import br.com.matheusmirro.ourmemories.model.post.PostModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -42,6 +44,9 @@ public class UserModel implements UserDetails {
 
     @CreationTimestamp
     private LocalDateTime created_at;
+
+    @OneToMany(mappedBy = "user")
+    private List<PostModel> posts;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

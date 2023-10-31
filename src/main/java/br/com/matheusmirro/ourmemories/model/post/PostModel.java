@@ -3,9 +3,12 @@ package br.com.matheusmirro.ourmemories.model.post;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.Getter;
 
@@ -17,11 +20,12 @@ public class PostModel {
     @GeneratedValue(generator = "UUID")
 
     private UUID id;
+    private String file_name;
+    private String file_type;
+    private long file_size;
+    private LocalDateTime upload_date;
 
-    private String fileName;
-    private String fileType;
-    private long fileSize;
-    private String file_location;
-    private LocalDateTime uploadDate;
-
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private UserModel user;
 }
