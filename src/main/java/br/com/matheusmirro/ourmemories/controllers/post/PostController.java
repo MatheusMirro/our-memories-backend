@@ -46,13 +46,13 @@ public class PostController {
                 postModel.setUser(authenticatedUser);
 
                 postRepository.save(postModel);
+
             }
         } catch (Exception e) {
             var error = e.getMessage();
             System.out.println(error);
         }
         return ResponseEntity.accepted().body("Upload feito com sucesso!");
-
     }
 
     private boolean isValidImage(MultipartFile file) {

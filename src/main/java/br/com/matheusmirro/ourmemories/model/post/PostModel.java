@@ -28,4 +28,5 @@ public class PostModel {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private UserModel user;
+
 }
