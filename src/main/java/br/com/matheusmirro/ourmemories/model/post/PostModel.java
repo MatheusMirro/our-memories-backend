@@ -29,4 +29,7 @@ public class PostModel {
     @JoinColumn(name = "user_id")
     private UserModel user;
 
+    @ManyToOne
+    @JoinColumn(name = "comment_id")
+    private CommentModel comment;
 }
