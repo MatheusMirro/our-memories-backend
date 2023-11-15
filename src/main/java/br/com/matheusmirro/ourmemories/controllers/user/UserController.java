@@ -65,7 +65,6 @@ public class UserController {
                                 postModel.getFile_type(),
                                 postModel.getFile_size(),
                                 postModel.getUpload_date());
-
                         fileResponses.add(response);
                     }
 
@@ -75,7 +74,6 @@ public class UserController {
         } catch (Exception e) {
             throw new Error(e.getMessage());
         }
-
         return ResponseEntity.notFound().build();
     }
 }
