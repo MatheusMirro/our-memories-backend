@@ -3,6 +3,9 @@ package br.com.matheusmirro.ourmemories.controllers.post;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import lombok.Data;
+
+@Data
 public class FileResponse {
     private UUID id;
     private String fileName;
@@ -15,47 +18,6 @@ public class FileResponse {
         this.fileName = fileName;
         this.fileType = fileType;
         this.fileSize = fileSize;
-        this.uploadDate = uploadDate;
-    }
-
-    // Getters e Setters (ou métodos acessores) para cada campo
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
-    public String getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(String fileType) {
-        this.fileType = fileType;
-    }
-
-    public long getFileSize() {
-        return fileSize;
-    }
-
-    public void setFileSize(long fileSize) {
-        this.fileSize = fileSize;
-    }
-
-    public LocalDateTime getUploadDate() {
-        return uploadDate;
-    }
-
-    public void setUploadDate(LocalDateTime uploadDate) {
         this.uploadDate = uploadDate;
     }
 }
