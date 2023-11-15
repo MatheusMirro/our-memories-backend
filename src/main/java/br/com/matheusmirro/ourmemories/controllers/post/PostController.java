@@ -42,11 +42,8 @@ public class PostController {
                 postModel.setFile_type(file.getContentType());
                 postModel.setFile_size(file.getSize());
                 postModel.setUpload_date(LocalDateTime.now());
-
                 postModel.setUser(authenticatedUser);
-
                 postRepository.save(postModel);
-
             }
         } catch (Exception e) {
             var error = e.getMessage();
@@ -60,8 +57,6 @@ public class PostController {
             System.out.println("Arquivo vazio ou nulo.");
             return false;
         }
-        // Adicione mais verificações, se necessário, como tamanho máximo, extensão,
-        // etc.
 
         return true;
     }
