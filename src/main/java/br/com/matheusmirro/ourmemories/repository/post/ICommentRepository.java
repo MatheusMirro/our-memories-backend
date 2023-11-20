@@ -9,5 +9,4 @@ import br.com.matheusmirro.ourmemories.model.post.CommentModel;
 @Repository
 public interface ICommentRepository extends JpaRepository<CommentModel, UUID> {
     List<CommentModel> findAllByPost_Id(UUID postId);
-
 }
