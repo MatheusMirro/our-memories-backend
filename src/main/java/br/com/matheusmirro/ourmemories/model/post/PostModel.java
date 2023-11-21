@@ -3,6 +3,7 @@ package br.com.matheusmirro.ourmemories.model.post;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import br.com.matheusmirro.ourmemories.model.user.CommentModel;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

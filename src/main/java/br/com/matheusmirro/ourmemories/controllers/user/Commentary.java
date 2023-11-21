@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.matheusmirro.ourmemories.model.post.CommentModel;
 import br.com.matheusmirro.ourmemories.model.post.PostModel;
+import br.com.matheusmirro.ourmemories.model.user.CommentModel;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import br.com.matheusmirro.ourmemories.repository.post.ICommentRepository;
 import br.com.matheusmirro.ourmemories.repository.post.IPostRepository;

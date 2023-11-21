@@ -1,9 +1,8 @@
-package br.com.matheusmirro.ourmemories.model.post;
+package br.com.matheusmirro.ourmemories.model.user;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-import br.com.matheusmirro.ourmemories.model.user.UserModel;
+import br.com.matheusmirro.ourmemories.model.post.PostModel;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -14,8 +13,8 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "tb_comment")
-public class CommentModel {
+@Table(name = "likes")
+public class LikeModel {
     @Id
     @GeneratedValue(generator = "UUID")
     private UUID id;
@@ -27,7 +26,4 @@ public class CommentModel {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private PostModel post;
-
-    private String text;
-    private LocalDateTime commentDate;
 }
