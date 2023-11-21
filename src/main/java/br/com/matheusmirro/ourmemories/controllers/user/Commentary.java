@@ -40,13 +40,9 @@ public class Commentary {
         if (authentication == null || !authentication.isAuthenticated()) {
             return "Usuário não autenticado.";
         }
-        // precisa ser verificada a logica.
+
         try {
             UserModel authenticatedUser = (UserModel) authentication.getPrincipal();
-            if (authenticatedUser.getUsername().equals(username)) {
-                return "Usuário não autorizado.";
-            }
-
             Optional<PostModel> optionalPost = postRepository.findById(id);
 
             if (optionalPost.isPresent()) {
