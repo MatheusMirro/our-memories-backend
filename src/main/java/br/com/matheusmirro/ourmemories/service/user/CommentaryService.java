@@ -1,4 +1,4 @@
-package br.com.matheusmirro.ourmemories.controllers.user;
+package br.com.matheusmirro.ourmemories.service.user;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -6,39 +6,33 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.stereotype.Service;
 
+import br.com.matheusmirro.ourmemories.controllers.user.CommentRequest;
 import br.com.matheusmirro.ourmemories.model.post.PostModel;
 import br.com.matheusmirro.ourmemories.model.user.CommentModel;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import br.com.matheusmirro.ourmemories.repository.post.ICommentRepository;
 import br.com.matheusmirro.ourmemories.repository.post.IPostRepository;
-import org.springframework.web.bind.annotation.GetMapping;
 
-@RestController
-@RequestMapping("/p")
-public class Commentary {
+@Service
+public class CommentaryService {
 
-    @Autowired
-    private ICommentRepository commentRepository;
+    private final ICommentRepository commentRepository;
+    private final IPostRepository postRepository;
 
-    @Autowired
-    IPostRepository postRepository;
+    public CommentaryService(ICommentRepository commentRepository, IPostRepository postRepository) {
+        this.commentRepository = commentRepository;
+        this.postRepository = postRepository;
+    }
 
-    @PostMapping("/{id}")
-    public String commentary(@RequestBody CommentRequest commentRequest, @PathVariable("id") UUID id, String username,
+    public ResponseEntity<String> commentary(CommentRequest commentRequest, UUID id, String username,
             Authentication authentication) {
-
         if (authentication == null || !authentication.isAuthenticated()) {
-            return "Usuário não autenticado.";
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Usuário não autenticado!");
         }
 
         try {
@@ -55,27 +49,23 @@ public class Commentary {
                 comment.setCommentDate(LocalDateTime.now());
 
                 commentRepository.save(comment);
-                return "Comentário recebido!!!";
-            } else {
-                return "Post não encontrado!";
-            }
 
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Comentário recebido!");
+            } else {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Post não encontrado");
+            }
         } catch (Exception e) {
             e.printStackTrace();
-            return "Algo deu errado aqui: " + e.getMessage();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Algo deu errado aqui");
         }
     }
 
-    @GetMapping("/{id}/comments")
-    public ResponseEntity<List<CommentRequest>> getPhotoComments(@PathVariable("id") UUID id,
-            Authentication authentication) {
-
+    public ResponseEntity<List<CommentRequest>> getPhotoComments(Authentication authentication, UUID id) {
         try {
             if (authentication != null && authentication.isAuthenticated()) {
                 UserModel authenticatedUser = (UserModel) authentication.getPrincipal();
 
                 if (authenticatedUser != null) {
-
                     List<CommentModel> comments = commentRepository.findAllByPost_Id(id);
                     List<CommentRequest> CommentRequests = new ArrayList<>();
 
@@ -84,7 +74,6 @@ public class Commentary {
                                 comment.getText());
                         CommentRequests.add(response);
                     }
-
                     return ResponseEntity.ok(CommentRequests);
                 }
             }
@@ -94,5 +83,4 @@ public class Commentary {
         }
         return ResponseEntity.notFound().build();
     }
-
 }

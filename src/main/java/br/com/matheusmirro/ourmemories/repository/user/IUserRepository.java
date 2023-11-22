@@ -10,5 +10,4 @@ import br.com.matheusmirro.ourmemories.model.user.UserModel;
 @Repository
 public interface IUserRepository extends JpaRepository<UserModel, UUID> {
     UserModel findByUsername(String username);
-
 }
