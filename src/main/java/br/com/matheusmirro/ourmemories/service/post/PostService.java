@@ -3,24 +3,25 @@ package br.com.matheusmirro.ourmemories.service.post;
 import java.time.LocalDateTime;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
-<<<<<<< HEAD
+import br.com.matheusmirro.ourmemories.errors.ValidFileSizeException;
 import br.com.matheusmirro.ourmemories.infra.security.TokenService;
-=======
->>>>>>> 34fa38c7e63244e04cdba5ff4b93bd6d13c45c56
 import br.com.matheusmirro.ourmemories.model.post.PostModel;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import br.com.matheusmirro.ourmemories.repository.post.IPostRepository;
+import jakarta.servlet.annotation.MultipartConfig;
 
 @Service
+@MultipartConfig(maxFileSize = 1024*1204, maxRequestSize = 1024*1024)
 public class PostService {
 
     @Autowired
-<<<<<<< HEAD
     private IPostRepository postRepository;
 
     @Autowired
@@ -38,21 +39,8 @@ public class PostService {
             // identify user by token getting his name
             var authenticatedUser = (UserModel) authentication.getPrincipal();
             for (MultipartFile file : uploadingFiles) {
-=======
-    private final IPostRepository postRepository;
-
-    public PostService(IPostRepository postRepository) {
-        this.postRepository = postRepository;
-    }
-
-    public ResponseEntity<String> uploadingPost(MultipartFile[] uploadinFiles, Authentication authentication) {
-        try {
-            // identify user by token getting his name
-            var authenticatedUser = (UserModel) authentication.getPrincipal();
-            for (MultipartFile file : uploadinFiles) {
->>>>>>> 34fa38c7e63244e04cdba5ff4b93bd6d13c45c56
-                if (!isValidImage(file)) {
-                    return ResponseEntity.badRequest().body("Arquivo inválido: " + file.getOriginalFilename());
+                if(!isValidFile(file)) {
+                    return ResponseEntity.badRequest().body("Arquivlo Invalido: " + file.getOriginalFilename());
                 }
 
                 PostModel postModel = new PostModel();
@@ -69,20 +57,11 @@ public class PostService {
         }
         return ResponseEntity.accepted().body("Upload feito com sucesso!");
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> 34fa38c7e63244e04cdba5ff4b93bd6d13c45c56
-    private boolean isValidImage(MultipartFile file) {
-        if (file == null || file.isEmpty()) {
-            System.out.println("Arquivo vazio ou nulo.");
+    public boolean isValidFile(MultipartFile file){
+        if(file == null) {
+            System.out.println("Arquivo invalido");
             return false;
         }
-<<<<<<< HEAD
-
-=======
->>>>>>> 34fa38c7e63244e04cdba5ff4b93bd6d13c45c56
         return true;
     }
-
 }
