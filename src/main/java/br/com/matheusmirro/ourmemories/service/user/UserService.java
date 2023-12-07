@@ -9,7 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
+import br.com.matheusmirro.ourmemories.auth.domain.user.UserRole;
 import br.com.matheusmirro.ourmemories.controllers.post.FileResponse;
+import br.com.matheusmirro.ourmemories.messages.errors.UserErrors;
+import br.com.matheusmirro.ourmemories.messages.success.UserSuccess;
 import br.com.matheusmirro.ourmemories.model.post.PostModel;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import br.com.matheusmirro.ourmemories.repository.post.IPostRepository;
@@ -32,11 +35,16 @@ public class UserService {
         var hashedPassword = BCrypt.withDefaults().hashToString(12, userModel.getPassword().toCharArray());
         userModel.setPassword(hashedPassword);
 
+        if (userModel.getRole() == null) {
+            userModel.setRole(UserRole.USER);
+        }
+
         if (findUser == null) {
             userRepository.save(userModel);
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body("Usuário criado com sucesso!");
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
+                    .body(UserSuccess.USER_CREATED_SUCCESSFULLY);
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Usuário já existe!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(UserErrors.USER_ALREADY_IN);
         }
     }
 
