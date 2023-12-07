@@ -32,7 +32,6 @@ public class CommentaryController {
             String username,
             Authentication authentication) {
         return commentaryService.commentary(commentRequest, id, username, authentication);
-
     }
 
     @GetMapping("/{id}/comments")
