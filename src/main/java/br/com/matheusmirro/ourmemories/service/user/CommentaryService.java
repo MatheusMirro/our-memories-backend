@@ -12,6 +12,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import br.com.matheusmirro.ourmemories.controllers.user.CommentRequest;
+import br.com.matheusmirro.ourmemories.messages.errors.PostErrors;
+import br.com.matheusmirro.ourmemories.messages.errors.UserErrors;
+import br.com.matheusmirro.ourmemories.messages.success.PostSuccess;
 import br.com.matheusmirro.ourmemories.model.post.PostModel;
 import br.com.matheusmirro.ourmemories.model.user.CommentModel;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
@@ -32,7 +35,7 @@ public class CommentaryService {
     public ResponseEntity<String> commentary(CommentRequest commentRequest, UUID id, String username,
             Authentication authentication) {
         if (authentication == null || !authentication.isAuthenticated()) {
-            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body("Usuário não autenticado!");
+            return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(UserErrors.USER_NOT_AUTHENTICATED);
         }
 
         try {
@@ -50,13 +53,12 @@ public class CommentaryService {
 
                 commentRepository.save(comment);
 
-                return ResponseEntity.status(HttpStatus.ACCEPTED).body("Comentário recebido!");
+                return ResponseEntity.status(HttpStatus.ACCEPTED).body(PostSuccess.COMMENT_RECEIVED);
             } else {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Post não encontrado");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(PostErrors.POST_NOT_FOUND);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Algo deu errado aqui");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(PostErrors.TRY_AGAIN);
         }
     }
 
