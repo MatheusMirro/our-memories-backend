@@ -9,13 +9,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.matheusmirro.ourmemories.auth.domain.user.RegisterDTO;
+import br.com.matheusmirro.ourmemories.auth.domain.user.UserRole;
 import br.com.matheusmirro.ourmemories.controllers.post.FileResponse;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import br.com.matheusmirro.ourmemories.service.user.UserService;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -27,7 +31,11 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> create(@RequestBody UserModel userModel) {
+    public ResponseEntity<String> create(@RequestBody UserModel userModel, RegisterDTO registerDTO) {
+
+        if (registerDTO.role() == null) {
+            registerDTO = new RegisterDTO(registerDTO.username(), registerDTO.password(), UserRole.USER);
+        }
         return userService.createUser(userModel);
     }
 
