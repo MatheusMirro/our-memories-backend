@@ -12,6 +12,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
+import br.com.matheusmirro.ourmemories.messages.errors.TokenErrors;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 
 @Service
@@ -29,7 +30,7 @@ public class TokenService {
                     .sign(algorithm);
             return token;
         } catch (JWTCreationException exception) {
-            throw new RuntimeException("Error while generating token", exception);
+            throw new RuntimeException(TokenErrors.ERROR_GENERATING_TOKEN, exception);
         }
     }
 
@@ -55,7 +56,7 @@ public class TokenService {
                     .verify(tokenJWT)
                     .getSubject();
         } catch (JWTVerificationException exception) {
-            throw new RuntimeException("Token JWT inválido");
+            throw new RuntimeException(TokenErrors.INVALID_JWT_TOKEN);
         }
     }
 
