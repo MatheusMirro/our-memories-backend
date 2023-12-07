@@ -6,6 +6,7 @@ public class PostErrors extends RuntimeException {
     public static final String TRY_AGAIN = "Algo deu errado! Tente fazer o comentário em poucos minutos!";
     public static final String ERROR_SEND_LIKE = "Algo deu errado! Tente curtir em poucos minutos!";
     // Adicione outras mensagens conforme necessário
+    public static final String INTERNAL_SERVER_ERROR = "Não foi possivel enviar o arquivo";
 
     public PostErrors(String message) {
         super(message);

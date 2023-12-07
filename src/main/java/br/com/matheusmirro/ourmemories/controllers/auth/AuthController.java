@@ -36,7 +36,8 @@ public class AuthController {
 
     @CrossOrigin
     @PostMapping("/login")
-    public ResponseEntity<Object> login(@RequestBody AuthenticationDTO data) {
+    public ResponseEntity<HashMap<Object, Object>> login(@RequestBody AuthenticationDTO data) {
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.username(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
         var token = tokenService.generateToken((UserModel) auth.getPrincipal());

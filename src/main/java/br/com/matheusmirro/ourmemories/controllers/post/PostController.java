@@ -8,11 +8,13 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import br.com.matheusmirro.ourmemories.service.post.PostService;
 
 @RestController
 @RequestMapping("/post")
 public class PostController {
+    
     private final PostService postService;
 
     public PostController(PostService postService) {
@@ -20,6 +22,11 @@ public class PostController {
     }
 
     @PostMapping("/picture")
+    public ResponseEntity<String> postPicture(@RequestPart("uploadingFiles") MultipartFile[] uploadingFiles, Authentication authentication){
+      return postService.uploadingPost(uploadingFiles, authentication);
+    }
+
+    
     public ResponseEntity<String> uploadingPost(@RequestPart("uploadingFiles") MultipartFile[] uploadingFiles,
             Authentication authentication) {
 

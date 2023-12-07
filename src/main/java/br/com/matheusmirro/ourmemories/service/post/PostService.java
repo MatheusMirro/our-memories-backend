@@ -10,26 +10,36 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.matheusmirro.ourmemories.messages.errors.PostErrors;
 import br.com.matheusmirro.ourmemories.messages.success.PostSuccess;
+import br.com.matheusmirro.ourmemories.infra.security.TokenService;
 import br.com.matheusmirro.ourmemories.model.post.PostModel;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import br.com.matheusmirro.ourmemories.repository.post.IPostRepository;
+import jakarta.servlet.annotation.MultipartConfig;
 
 @Service
+@MultipartConfig(maxFileSize = 1024 * 1204, maxRequestSize = 1024 * 1024)
 public class PostService {
 
     @Autowired
-    private final IPostRepository postRepository;
+    private IPostRepository postRepository;
 
-    public PostService(IPostRepository postRepository) {
+    @Autowired
+    TokenService tokenService;
+
+    public PostService(IPostRepository postRepository, TokenService tokenService) {
         this.postRepository = postRepository;
+        this.tokenService = tokenService;
     }
 
     // upload multiple images
-    public ResponseEntity<String> uploadingPost(MultipartFile[] uploadinFiles, Authentication authentication) {
+    public ResponseEntity<String> uploadingPost(MultipartFile[] uploadingFiles,
+            Authentication authentication) {
+
         try {
             // get user details from token
             var authenticatedUser = (UserModel) authentication.getPrincipal();
-            for (MultipartFile file : uploadinFiles) {
+
+            for (MultipartFile file : uploadingFiles) {
                 if (!isValidImage(file)) {
                     return ResponseEntity.badRequest().body(PostErrors.INVALID_FILE + file.getOriginalFilename());
                 }
@@ -41,20 +51,25 @@ public class PostService {
                 postModel.setFile_size(file.getSize());
                 postModel.setUpload_date(LocalDateTime.now());
                 postModel.setUser(authenticatedUser);
+
                 postRepository.save(postModel);
             }
+
+            return ResponseEntity.accepted().body(PostSuccess.UPLOAD_SUCCESSFULY);
         } catch (Exception e) {
             var error = e.getMessage();
             System.out.println(error);
+            return ResponseEntity.internalServerError().body(PostErrors.INTERNAL_SERVER_ERROR);
         }
-        return ResponseEntity.accepted().body(PostSuccess.UPLOAD_SUCCESSFULY);
     }
 
     // check if uploaded file is a valid image
     private boolean isValidImage(MultipartFile file) {
         if (file == null || file.isEmpty()) {
+            System.out.println("Arquivo invalido");
             return false;
         }
+
         return true;
     }
 }
