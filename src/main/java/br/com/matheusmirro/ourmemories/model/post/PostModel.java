@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import lombok.Data;
 import lombok.Getter;
@@ -33,4 +34,7 @@ public class PostModel {
     @ManyToOne
     @JoinColumn(name = "comment_id")
     private CommentModel comment;
+
+    @Lob
+    private byte[] file_data;
 }
