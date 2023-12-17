@@ -63,7 +63,8 @@ public class UserService {
                                 postModel.getFile_name(),
                                 postModel.getFile_type(),
                                 postModel.getFile_size(),
-                                postModel.getUpload_date());
+                                postModel.getUpload_date(),
+                                postModel.getFile_data());
                         fileResponses.add(response);
                     }
                 }
