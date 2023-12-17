@@ -30,7 +30,7 @@ public class SecurityConfiguration {
 
                         // USERS ROUTES--------
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/users/{username}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/users/{username}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/validate").permitAll()
 
@@ -38,7 +38,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/like/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/p/{id}/comments").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/p/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/post/picture").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/post/picture").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
