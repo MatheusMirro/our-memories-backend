@@ -51,6 +51,7 @@ public class PostService {
                 postModel.setFile_size(file.getSize());
                 postModel.setUpload_date(LocalDateTime.now());
                 postModel.setUser(authenticatedUser);
+                postModel.setFile_data(file.getBytes());
 
                 postRepository.save(postModel);
             }
