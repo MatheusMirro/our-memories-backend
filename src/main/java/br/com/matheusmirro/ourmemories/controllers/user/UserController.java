@@ -2,8 +2,9 @@ package br.com.matheusmirro.ourmemories.controllers.user;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,10 +40,13 @@ public class UserController {
         return userService.createUser(userModel);
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<List<FileResponse>> listOfPosts(@PathVariable String username,
-            Authentication authentication) {
-        List<FileResponse> fileResponses = userService.getListOfPostsByUsername(username, authentication);
-        return ResponseEntity.ok(fileResponses);
+    @GetMapping(value = "/{username}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<byte[]> listOfPosts(@PathVariable String username) {
+        List<FileResponse> fileResponses = userService.getListOfPostsByUsername(username);
+
+        // Extraia o byte array da imagem
+        byte[] imageData = fileResponses.get(0).getFileData();
+
+        return new ResponseEntity<>(imageData, HttpStatus.OK);
     }
 }
