@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
@@ -48,30 +47,27 @@ public class UserService {
         }
     }
 
-    public List<FileResponse> getListOfPostsByUsername(String username, Authentication authentication) {
+    public List<FileResponse> getListOfPostsByUsername(String username) {
         List<FileResponse> fileResponses = new ArrayList<>();
 
         try {
-            if (authentication != null && authentication.isAuthenticated()) {
-                UserModel authenticatedUser = (UserModel) authentication.getPrincipal();
-                if (authenticatedUser.getUsername().equals(username)) {
-                    List<PostModel> postModels = postRepository.findAllByUser_Username(username);
+            List<PostModel> postModels = postRepository.findAllByUser_Username(username);
 
-                    for (PostModel postModel : postModels) {
-                        FileResponse response = new FileResponse(
-                                postModel.getId(),
-                                postModel.getFile_name(),
-                                postModel.getFile_type(),
-                                postModel.getFile_size(),
-                                postModel.getUpload_date(),
-                                postModel.getFile_data());
-                        fileResponses.add(response);
-                    }
-                }
+            for (PostModel postModel : postModels) {
+                FileResponse response = new FileResponse(
+                        postModel.getId(),
+                        postModel.getFile_name(),
+                        postModel.getFile_type(),
+                        postModel.getFile_size(),
+                        postModel.getUpload_date(),
+                        postModel.getFile_data());
+
+                fileResponses.add(response);
             }
         } catch (Exception e) {
             throw new Error(e.getMessage());
         }
+
         return fileResponses;
     }
 }
