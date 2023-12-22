@@ -35,9 +35,9 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/auth/validate").permitAll()
 
                         // POSTS ROUTES--------
-                        .requestMatchers(HttpMethod.POST, "/like/{id}").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.GET, "/p/{id}/comments").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/p/{id}").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/like/{id}").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/p/{id}/comments").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/p/{id}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/post/picture").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
