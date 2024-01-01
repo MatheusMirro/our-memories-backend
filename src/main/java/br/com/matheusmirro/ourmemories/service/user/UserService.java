@@ -70,4 +70,9 @@ public class UserService {
 
         return fileResponses;
     }
+
+    public UserModel getUserInfo(String username) {
+        var findUser = userRepository.findByUsername(username);
+        return findUser;
+    }
 }
