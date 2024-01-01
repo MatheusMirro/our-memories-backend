@@ -30,6 +30,7 @@ public class SecurityConfiguration {
 
                         // USERS ROUTES--------
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/users/posts/{username}").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/{username}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/validate").permitAll()
