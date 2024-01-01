@@ -1,10 +1,10 @@
 package br.com.matheusmirro.ourmemories.controllers.user;
 
 import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import br.com.matheusmirro.ourmemories.auth.domain.user.RegisterDTO;
 import br.com.matheusmirro.ourmemories.auth.domain.user.UserRole;
@@ -44,7 +43,20 @@ public class UserController {
         return userService.createUser(userModel);
     }
 
-    @GetMapping(value = "/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping("/{username}")
+    public ResponseEntity<HashMap<Object, Object>> getUserInfoName(@PathVariable String username) {
+        UserModel userInfo = userService.getUserInfo(username);
+
+        var mainInfo = new HashMap<>();
+        mainInfo.put("name", userInfo.getName());
+        mainInfo.put("lastname", userInfo.getLastname());
+        mainInfo.put("email", userInfo.getEmail());
+        mainInfo.put("username", userInfo.getUsername());
+
+        return ResponseEntity.ok().body(mainInfo);
+    }
+
+    @GetMapping(value = "/posts/{username}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<String>> listOfPosts(@PathVariable String username) {
         List<FileResponse> fileResponses = userService.getListOfPostsByUsername(username);
 
