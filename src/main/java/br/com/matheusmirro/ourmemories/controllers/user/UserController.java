@@ -52,6 +52,8 @@ public class UserController {
         mainInfo.put("lastname", userInfo.getLastname());
         mainInfo.put("email", userInfo.getEmail());
         mainInfo.put("username", userInfo.getUsername());
+        mainInfo.put("biography", userInfo.getBiography());
+        mainInfo.put("postCount", userInfo.getPosts().size());
 
         return ResponseEntity.ok().body(mainInfo);
     }
