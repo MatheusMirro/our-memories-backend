@@ -16,7 +16,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -28,9 +30,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserModel implements UserDetails {
+
     @Id
     @GeneratedValue(generator = "UUID")
-
     private UUID id;
 
     private String name;
@@ -41,12 +43,17 @@ public class UserModel implements UserDetails {
     private String username;
     private String password;
     private UserRole role;
+    private String biography;
 
     @CreationTimestamp
     private LocalDateTime created_at;
 
     @OneToMany(mappedBy = "user")
     private List<PostModel> posts;
+
+    @OneToOne
+    @JoinColumn(name = "profile_picture_id")
+    private ProfilePictureModel profilePicture;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
