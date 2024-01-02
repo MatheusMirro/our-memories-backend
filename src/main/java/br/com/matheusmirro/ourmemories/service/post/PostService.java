@@ -10,7 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.matheusmirro.ourmemories.messages.errors.PostErrors;
 import br.com.matheusmirro.ourmemories.messages.success.PostSuccess;
-import br.com.matheusmirro.ourmemories.infra.security.TokenService;
 import br.com.matheusmirro.ourmemories.model.post.PostModel;
 import br.com.matheusmirro.ourmemories.model.user.UserModel;
 import br.com.matheusmirro.ourmemories.repository.post.IPostRepository;
@@ -23,12 +22,8 @@ public class PostService {
     @Autowired
     private IPostRepository postRepository;
 
-    @Autowired
-    TokenService tokenService;
-
-    public PostService(IPostRepository postRepository, TokenService tokenService) {
+    public PostService(IPostRepository postRepository) {
         this.postRepository = postRepository;
-        this.tokenService = tokenService;
     }
 
     // upload multiple images
