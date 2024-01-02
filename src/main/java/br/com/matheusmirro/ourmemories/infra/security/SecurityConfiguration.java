@@ -34,6 +34,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/users/{username}").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/validate").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/profile-picture/{username}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/profile-picture/upload").permitAll()
 
                         // POSTS ROUTES--------
                         .requestMatchers(HttpMethod.POST, "/like/{id}").permitAll()
